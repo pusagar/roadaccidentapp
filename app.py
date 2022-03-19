@@ -38,7 +38,7 @@ options_lanes = ['Two-way (divided with broken lines road marking)', 'Undivided 
        'other', 'Double carriageway (median)', 'One way',
        'Two-way (divided with solid lines road marking)', 'Unknown']
 
-features = ['hour','day_of_week','casualties','accident_cause','vehicles_involved','vehicle_type','driver_age','accident_area','driving_experience','lanes']
+features = ['hour','day_of_week','number_of_casualties','cause_of_accident','number_of_vehicles_involved','type_of_vehicle','age_band_of_driver','area_accident_occured','driving_experience','lanes_or_medians']
 
 
 st.markdown("<h1 style='text-align: center;'>Accident Severity Prediction App 🚧</h1>", unsafe_allow_html=True)
@@ -49,14 +49,14 @@ def main():
         
         hour = st.slider("Pickup Hour: ", 0, 23, value=0, format="%d")
         day_of_week = st.selectbox("Select Day of the Week: ", options=options_day)
-        casualties = st.slider("Hour of Accident: ", 1, 8, value=0, format="%d")
-        accident_cause = st.selectbox("Select Accident Cause: ", options=options_cause)
-        vehicles_involved = st.slider("Pickup Hour: ", 1, 7, value=0, format="%d")
-        vehicle_type = st.selectbox("Select Vehicle Type: ", options=options_vehicle_type)
-        driver_age = st.selectbox("Select Driver Age: ", options=options_age)
-        accident_area = st.selectbox("Select Accident Area: ", options=options_acc_area)
+        number_of_casualties = st.slider("Hour of Accident: ", 1, 8, value=0, format="%d")
+        cause_of_accident = st.selectbox("Select Accident Cause: ", options=options_cause)
+        number_of_vehicles_involved = st.slider("Pickup Hour: ", 1, 7, value=0, format="%d")
+        type_of_vehicle = st.selectbox("Select Vehicle Type: ", options=options_vehicle_type)
+        age_band_of_driver = st.selectbox("Select Driver Age: ", options=options_age)
+        area_accident_occured = st.selectbox("Select Accident Area: ", options=options_acc_area)
         driving_experience = st.selectbox("Select Driving Experience: ", options=options_driver_exp)
-        lanes = st.selectbox("Select Lanes: ", options=options_lanes)
+        lanes_or_medians = st.selectbox("Select Lanes: ", options=options_lanes)
         
         
         submit = st.form_submit_button("Predict")
@@ -64,16 +64,16 @@ def main():
 
     if submit:
         day_of_week = ordinal_encoder(day_of_week, options_day)
-        accident_cause = ordinal_encoder(accident_cause, options_cause)
-        vehicle_type = ordinal_encoder(vehicle_type, options_vehicle_type)
-        driver_age =  ordinal_encoder(driver_age, options_age)
-        accident_area =  ordinal_encoder(accident_area, options_acc_area)
+        cause_of_accident = ordinal_encoder(cause_of_accident, options_cause)
+        type_of_vehicle = ordinal_encoder(type_of_vehicle, options_vehicle_type)
+        age_band_of_driver =  ordinal_encoder(age_band_of_driver, options_age)
+        area_accident_occured =  ordinal_encoder(area_accident_occured, options_acc_area)
         driving_experience = ordinal_encoder(driving_experience, options_driver_exp) 
-        lanes = ordinal_encoder(lanes, options_lanes)
+        lanes_or_medians = ordinal_encoder(lanes_or_medians, options_lanes)
 
 
-        data = np.array([hour,day_of_week,casualties,accident_cause,vehicles_involved, 
-                            vehicle_type,driver_age,accident_area,driving_experience,lanes]).reshape(1,-1)
+        data = np.array([hour,day_of_week,number_of_casualties,cause_of_accident,number_of_vehicles_involved, 
+                            type_of_vehicle,age_band_of_driver,area_accident_occured,driving_experience,lanes_or_medians]).reshape(1,-1)
 
         pred = get_prediction(data=data, model=model)
 
